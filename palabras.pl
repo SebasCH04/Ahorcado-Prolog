@@ -53,9 +53,24 @@ palabra_secreta(Pal) :-
     palabra(L),
     random_member(Pal, L).
 
-%lee una palabra de la consola sin mostrar la entrada
+%helper para validar que la palabra contenga solo letras
+valid_word(Word) :-
+    string_chars(Word, Chars),
+    all_letters(Chars).
+
+all_letters([]).
+all_letters([H|T]) :-
+    char_type(H, alpha),
+    all_letters(T).
+
+%lee una palabra de la consola sin mostrar la entrada y valida que solo tenga letras
 leer_palabra_secreta(Palabra) :-
     process_create(path(bash), ['-c', 'read -s -p "Ingrese la palabra secreta: " p; echo $p'], [stdout(pipe(Out))]),
-    read_line_to_string(Out, Palabra),
+    read_line_to_string(Out, TempWord),
     close(Out),
-    nl.
+    nl,
+    ( valid_word(TempWord) ->
+         Palabra = TempWord
+    ;   writeln('La palabra ingresada es inválida. Solo se permiten letras.'),
+         leer_palabra_secreta(Palabra)
+    ).
