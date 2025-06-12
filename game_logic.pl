@@ -16,7 +16,7 @@ start :-
     ;  palabras:palabra_secreta(Word)
     ),
     atom_chars(Word, Letters),
-    % Pregunta si se quiere usar el número predeterminado de intentos (7)
+    %pregunta si se quiere usar el numero predeterminado de intentos (7)
     write('Usar el número de intentos predeterminado (7)? (s/n): '),
     flush_output(current_output),
     read_line_to_string(user_input, UseDefault),
